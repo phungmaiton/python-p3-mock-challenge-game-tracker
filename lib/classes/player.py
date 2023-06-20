@@ -63,6 +63,6 @@ class Player:
                 if game.average_score(player) > max_score:
                     max_player = player
                     max_score = game.average_score(player)
-                return max_player
+            return max_player
         else:
             return None
