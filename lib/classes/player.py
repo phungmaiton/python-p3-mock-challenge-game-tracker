@@ -5,7 +5,6 @@ class Player:
         self.username = username
         self._results = []
         self._games_played = []
-
         Player.all.append(self)
 
     @property
@@ -24,7 +23,6 @@ class Player:
 
         if new_result and isinstance(new_result, Result):
             self._results.append(new_result)
-
         return self._results
 
     def games_played(self, new_game=None):
@@ -32,37 +30,30 @@ class Player:
 
         if new_game and isinstance(new_game, Game):
             self._games_played.append(new_game)
-
         return self._games_played
 
     def played_game(self, game):
-        from classes.result import Result
-
-        for result in Result.all:
-            if self == result.player and game == result.game:
-                return True
+        if game in self._games_played:
+            return True
         else:
             return False
 
     def num_times_played(self, game):
-        from classes.result import Result
-
-        game_list = [
-            result.game
-            for result in Result.all
-            if result.game == game and result.player == self
-        ]
-        return len(game_list)
+        return len(
+            [game_played for game_played in self._games_played if game_played == game]
+        )
 
     @classmethod
     def highest_scored(cls, game):
-        if cls.all:
-            max_player = None
-            max_score = 0
+        from classes.game import Game
+
+        if len(cls.all) > 0:
+            avg_score = {}
+
             for player in cls.all:
-                if game.average_score(player) > max_score:
-                    max_player = player
-                    max_score = game.average_score(player)
-            return max_player
+                avg = Game.average_score(game, player)
+                avg_score[player] = avg
+
+            return max(avg_score, key=avg_score.get)
         else:
             return None

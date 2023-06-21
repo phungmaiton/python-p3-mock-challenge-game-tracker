@@ -4,6 +4,7 @@ class Game:
             self._title = title
         else:
             raise Exception
+
         self._results = []
         self._players = []
 
@@ -26,18 +27,6 @@ class Game:
         return self._players
 
     def average_score(self, player):
-        from classes.result import Result
-
         return sum(
-            [
-                result.score
-                for result in Result.all
-                if self == result.game and player == result.player
-            ]
-        ) / len(
-            [
-                result.score
-                for result in Result.all
-                if self == result.game and player == result.player
-            ]
-        )
+            [result.score for result in self._results if result.player == player]
+        ) / len(self._results)

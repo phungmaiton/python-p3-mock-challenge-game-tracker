@@ -6,22 +6,10 @@ class Result:
         self.game = game
         self.score = score
         Result.all.append(self)
-
-        self.game.results(self)
-        self.game.players(self.player)
-        self.player.results(self)
-        self.player.games_played(self.game)
-
-    @property
-    def score(self):
-        return self._score
-
-    @score.setter
-    def score(self, score):
-        if isinstance(score, int) and 1 <= score <= 5000:
-            self._score = score
-        else:
-            raise Exception
+        player.results(self)
+        player.games_played(self.game)
+        game.results(self)
+        game.players(self.player)
 
     @property
     def player(self):
@@ -46,5 +34,16 @@ class Result:
 
         if game and isinstance(game, Game):
             self._game = game
+        else:
+            raise Exception
+
+    @property
+    def score(self):
+        return self._score
+
+    @score.setter
+    def score(self, score):
+        if isinstance(score, int) and 1 <= score <= 5000:
+            self._score = score
         else:
             raise Exception
